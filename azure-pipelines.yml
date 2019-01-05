@@ -1,0 +1,56 @@
+# https://aka.ms/yaml
+jobs:
+- job: 'tox_on_Xenial'
+  pool:
+    vmImage: 'Ubuntu-16.04' # other options: 'macOS-10.13', 'VS2017-Win2016'
+
+  variables:
+    buildConfiguration: 'Release'
+
+  steps:
+  - script: |
+      dotnet build --configuration $(buildConfiguration)
+      dotnet test dotnetcore-tests --configuration $(buildConfiguration) --logger trx
+    displayName: 'Build And Test on Linux'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+
+- job: 'tox_on_macOS'
+  pool:
+    vmImage: 'macOS-10.13'
+
+  variables:
+    buildConfiguration: 'Release'
+
+  steps:
+  - script: |
+      dotnet build --configuration $(buildConfiguration)
+      dotnet test dotnetcore-tests --configuration $(buildConfiguration) --logger trx
+    displayName: 'Build And Test on MacOS'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+
+- job: 'tox_on_Windows'
+  pool:
+    vmImage: 'VS2017-Win2016'
+
+  variables:
+    buildConfiguration: 'Release'
+
+  steps:
+  - script: |
+      dotnet build --configuration $(buildConfiguration)
+      dotnet test dotnetcore-tests --configuration $(buildConfiguration) --logger trx
+    displayName: 'Build And Test on Windows'
+
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
