@@ -1,6 +1,6 @@
 # https://aka.ms/yaml
 jobs:
-- job: 'tox_on_Xenial'
+- job: 'dot_Net_on_Xenial'
   pool:
     vmImage: 'Ubuntu-16.04' # other options: 'macOS-10.13', 'VS2017-Win2016'
 
@@ -10,7 +10,7 @@ jobs:
   steps:
   - script: |
       dotnet build --configuration $(buildConfiguration)
-      dotnet test dotnetcore-tests --configuration $(buildConfiguration) --logger trx
+      dotnet test --configuration $(buildConfiguration) --logger trx
     displayName: 'Build And Test on Linux'
 
   - task: PublishTestResults@2
@@ -18,7 +18,7 @@ jobs:
       testRunner: VSTest
       testResultsFiles: '**/*.trx'
 
-- job: 'tox_on_macOS'
+- job: 'dot_Net_Core_on_macOS'
   pool:
     vmImage: 'macOS-10.13'
 
@@ -28,7 +28,7 @@ jobs:
   steps:
   - script: |
       dotnet build --configuration $(buildConfiguration)
-      dotnet test dotnetcore-tests --configuration $(buildConfiguration) --logger trx
+      dotnet test --configuration $(buildConfiguration) --logger trx
     displayName: 'Build And Test on MacOS'
 
   - task: PublishTestResults@2
@@ -36,7 +36,7 @@ jobs:
       testRunner: VSTest
       testResultsFiles: '**/*.trx'
 
-- job: 'tox_on_Windows'
+- job: 'dot_Net_on_Windows'
   pool:
     vmImage: 'VS2017-Win2016'
 
@@ -46,7 +46,7 @@ jobs:
   steps:
   - script: |
       dotnet build --configuration $(buildConfiguration)
-      dotnet test dotnetcore-tests --configuration $(buildConfiguration) --logger trx
+      dotnet test --configuration $(buildConfiguration) --logger trx
     displayName: 'Build And Test on Windows'
 
 
